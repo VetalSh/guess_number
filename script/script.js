@@ -7,7 +7,7 @@ let isNumber = function(n) {
 
 
 function game() {
-  let attemptsCount = 0; // Счетчик попыток
+  let attempts = 10; // Счетчик попыток
 
   let hiddenNumber = randomInteger(1, 99);  // Загаданное число 
   console.log('hiddenNumber: ', hiddenNumber);
@@ -20,24 +20,40 @@ function game() {
     } else {
       if (isNumber(enteredNumber)) {
         const guessNumber = +enteredNumber;
+        --attempts; // Уменьшаем количество попыток
         if (guessNumber > hiddenNumber) {
-          alert('Загаданное число меньше');
-          attemptsCount++;
-          console.log('attemptsCount: ', attemptsCount);
-          if (attemptsCount < 3) {
+          alert('Загаданное число меньше, осталось попыток ' + attempts);
+          if (attempts > 0) {
             alert('Попробуйте угадать снова!');
             toGuess();
+          } else {
+            let continueQuestion = confirm('Попытки закончились, хотите сыграть еще?');
+            if (continueQuestion) {
+              game(); // Запускаем игру снова
+            } else {
+              alert('Игра завершена! Захочешь сыграть еще - приходи!!!');
+            }
           }
         } else if (guessNumber < hiddenNumber) {
-          alert('Загаданное число больше');
-          attemptsCount++;
-          console.log('attemptsCount: ', attemptsCount);
-          if (attemptsCount < 3) {
+          alert('Загаданное число больше, осталось попыток ' + attempts);          
+          if (attempts > 0) {
             alert('Попробуйте угадать снова!');
             toGuess();
+          } else {
+            let continueQuestion = confirm('Попытки закончились, хотите сыграть еще?');
+            if (continueQuestion) {
+              game(); // Запускаем игру снова
+            } else {
+              alert('Игра завершена! Захочешь сыграть еще - приходи!!!');
+            }
           }
         } else if (guessNumber === hiddenNumber) {
-          alert('Угадал!!!');
+          let winQuestion = confirm('Поздравляю, Вы угадали!!! Хотели бы сыграть еще?');
+          if (winQuestion) {
+            game(); // Запускаем игру снова
+          } else {
+            alert('Игра завершена! Захочешь сыграть еще - приходи!!!');
+          }
         }
       } else {
         alert('Введи число!');
@@ -47,7 +63,6 @@ function game() {
   }
   
   toGuess(); //Запускаем функцию угадывания чисел
-  console.dir(toGuess);
 }
 
 game(); // Запускаем игру
